@@ -22,6 +22,11 @@ const routes = [
     name: "contact.create",
     component: () => import("@/views/ContactCreate.vue"),
   },
+  {
+    path: "/contacts/login",
+    name: "contact.login",
+    component: () => import("@/views/ContactLogin.vue"),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
