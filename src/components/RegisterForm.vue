@@ -1,14 +1,17 @@
 <template>
-  <Form @submit="submitContact" :validation-schema="contactFormSchema">
+  <Form 
+  @submit="submitContact" 
+  >
+  <!-- :validation-schema="userFormSchema" -->
     <div class="form-group">
-      <label for="name">Tên</label>
+      <label for="userName">Tên</label>
       <Field
-        name="name"
+        name="userName"
         type="text"
         class="form-control"
-        v-model="contactLocal.name"
+        v-model="userLocal.userName"
       />
-      <ErrorMessage name="name" class="error-feedback" />
+      <ErrorMessage name="userName" class="error-feedback" />
     </div>
     <div class="form-group">
       <label for="email">E-mail</label>
@@ -16,17 +19,17 @@
         name="email"
         type="email"
         class="form-control"
-        v-model="contactLocal.email"
+        v-model="userLocal.email"
       />
       <ErrorMessage name="email" class="error-feedback" />
     </div>
     <div class="form-group">
-      <label for="address">Địa chỉ</label>
+      <label for="password">Password</label>
       <Field
-        name="address"
+        name="password"
         type="text"
         class="form-control"
-        v-model="contactLocal.address"
+        v-model="userLocal.password"
       />
       <ErrorMessage name="address" class="error-feedback" />
     </div>
@@ -36,31 +39,23 @@
         name="phone"
         type="tel"
         class="form-control"
-        v-model="contactLocal.phone"
+        v-model="userLocal.phone"
       />
       <ErrorMessage name="phone" class="error-feedback" />
     </div>
-    <div class="form-group form-check">
+    <!-- <div class="form-group form-check">
       <input
         name="favorite"
         type="checkbox"
         class="form-check-input"
         v-model="contactLocal.favorite"
-      />
-      <label for="favorite" class="form-check-label">
+      /> -->
+      <!-- <label for="favorite" class="form-check-label">
         <strong>Liên hệ yêu thích</strong>
       </label>
-    </div>
+    </div> -->
     <div class="form-group">
       <button class="btn btn-primary">Lưu</button>
-      <button
-        v-if="contactLocal._id"
-        type="button"
-        class="ml-2 btn btn-danger"
-        @click="deleteContact"
-      >
-        Xóa
-      </button>
     </div>
   </Form>
 </template>
@@ -68,6 +63,7 @@
 <script>
 import * as yup from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import axios from "axios";
 export default {
   components: {
     Form,
@@ -76,15 +72,15 @@ export default {
   },
 
   // Truyền xuống 1 contact và trả về 2 kiểu ["submit:contact", "delete:contact"]
-  emits: ["submit:contact", "delete:contact"],
+  emits: ["submit:user"],
   props: {
-    contact: { type: Object, required: true },
+    user: { type: Object, required: true },
   },
 
   // valid
   data() {
-    const contactFormSchema = yup.object().shape({
-      name: yup
+    const userFormSchema = yup.object().shape({
+      userName: yup
         .string()
         .required("Tên phải có giá trị.")
         .min(2, "Tên phải ít nhất 2 ký tự.")
@@ -93,7 +89,10 @@ export default {
         .string()
         .email("E-mail không đúng.")
         .max(50, "E-mail tối đa 50 ký tự."),
-      address: yup.string().max(100, "Địa chỉ tối đa 100 ký tự."),
+      password: yup
+      .string()
+      .required("Mật khẩu phải có giá trị")
+      .min(8,"Mật khẩu ít nhất 8 kí tự"),
       phone: yup
         .string()
         .matches(
@@ -107,19 +106,16 @@ export default {
     return {
       // Chúng ta sẽ không muốn hiệu chỉnh props, nên tạo biến cục bộ
       // contactLocal để liên kết với các input trên form
-      contactLocal: this.contact,
-      contactFormSchema,
+      userLocal: this.user,
+      userFormSchema,
     };
   },
 
   // Lấy dữ liệu từ form
   methods: {
     submitContact() {
-      console.log(this.contactLocal)
-      this.$emit("submit:contact", this.contactLocal);
-    },
-    deleteContact() {
-      this.$emit("delete:contact", this.contactLocal.id);
+      console.log(this.userLocal);
+      this.$emit("submit:user", this.userLocal);
     },
   },
 };
@@ -127,4 +123,5 @@ export default {
 
 <style scoped>
 @import "@/assets/form.css";
+
 </style>

@@ -4,7 +4,7 @@
     <h4>Đăng nhập</h4>
     <LoginForm
       :user="user"
-      @submit:loginUser="checkLogin"
+      @submit:user="ktraLogin"
     />
     <p>{{ message }}</p>
   </div>
@@ -22,17 +22,21 @@ export default {
   data() {
     return {
       user: {
-        email:"",
+        userName:"",
         password:"",
       },
       message: "",
     };
   },
   methods: {
-    async checkLogin(data) {
+    async ktraLogin(data) {
       try {
         const res = await UserService.login(data);
-        window.localStorage.setItem("key", res._id)
+        window.localStorage.setItem("_id", res._id);
+        window.localStorage.setItem("userName", res.userName);
+        if(res){
+          this.$router.push({ name: "contactbook" });
+        }
 
       } catch (error) {
         console.log(error);

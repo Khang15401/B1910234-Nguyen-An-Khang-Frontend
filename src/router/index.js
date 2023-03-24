@@ -23,9 +23,14 @@ const routes = [
     component: () => import("@/views/ContactCreate.vue"),
   },
   {
-    path: "/contacts/login",
+    path: "/users/login",
     name: "contact.login",
     component: () => import("@/views/ContactLogin.vue"),
+  },
+  {
+    path: "/users/register",
+    name: "contact.register",
+    component: () => import("@/views/UserCreate.vue"),
   },
 ];
 const router = createRouter({

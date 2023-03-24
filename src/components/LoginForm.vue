@@ -1,14 +1,14 @@
 <template>
-  <Form @submit="submitContact" :validation-schema="contactFormSchema">
+  <Form @submit="submitContact" :validation-schema="userFormSchema">
     <div class="form-group">
-      <label for="name">Email</label>
+      <label for="userName">Username</label>
       <Field
-        name="email"
+        name="userName"
         type="text"
         class="form-control"
-        v-model="userLocal.email"
+        v-model="userLocal.userName"
       />
-      <ErrorMessage name="name" class="error-feedback" />
+      <ErrorMessage name="userName" class="error-feedback" />
     </div>
     <div class="form-group">
       <label for="password">Mật Khẩu</label>
@@ -41,24 +41,22 @@ export default {
   },
 
   data() {
-    const contactFormSchema = yup.object().shape({
-      email: yup
+    const userFormSchema = yup.object().shape({
+      userName: yup
         .string()
-        .required("Email đăng nhập phải có giá trị.")
-        .min(8, "Email phải ít nhất 8 ký tự."),
+        .required("Tên đăng nhập phải có giá trị."),
       password: yup
         .string()
-        .required("Mật khẩu phải có giá trị.")
-
-      
+        .required("Mật khẩu phải có giá trị.") 
     });
     return {
       userLocal: this.user,
-      contactFormSchema,
+      userFormSchema,
     };
   },
   methods: {
     submitContact() {
+      console.log(this.userLocal);
       this.$emit("submit:user", this.userLocal);
     },
   },

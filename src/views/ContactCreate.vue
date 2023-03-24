@@ -5,7 +5,6 @@
         :contact="contact"
         @submit:contact="createContact"
       />
-  
       <p>{{ message }}</p>
     </div>
   </template>
